@@ -1,6 +1,7 @@
 package com.gladurbad.medusa.util;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,9 +13,13 @@ import org.bukkit.entity.Player;
 public class CollisionUtil {
 
     private Block getBlockAsync(Location loc) {
-        if (loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4))
+        if(Bukkit.isPrimaryThread()) {
             return loc.getBlock();
-        return null;
+        } else {
+            if (loc.getWorld().isChunkLoaded(loc.getBlockX() >> 4, loc.getBlockZ() >> 4))
+                return loc.getBlock();
+            return null;
+        }
     }
 
     public boolean isOnChosenBlock(Player player, double yLevel, Material... materials) {
@@ -105,10 +110,7 @@ public class CollisionUtil {
 
     public boolean isCollidingWithClimbable(Player player) {
         final Location location = player.getLocation();
-        final int var1 = MathUtil.floor(location.getX());
-        final int var2 = MathUtil.floor(location.getY());
-        final int var3 = MathUtil.floor(location.getZ());
-        final Block var4 = new Location(location.getWorld(), var1, var2, var3).getBlock();
+        final Block var4 = getBlockAsync(player.getLocation());
         return var4.getType() == Material.LADDER || var4.getType() == Material.VINE;
     }
 }

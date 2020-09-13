@@ -53,7 +53,6 @@ public class PlayerData implements PacketListener {
     private boolean isSprinting, isSneaking;
     private Vector lastVelocity = new Vector(0, 0, 0);
 
-
     //Teleportation & setback data.
     private long lastSetbackTime;
 

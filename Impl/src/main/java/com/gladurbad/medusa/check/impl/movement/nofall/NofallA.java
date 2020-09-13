@@ -22,10 +22,11 @@ public class NofallA extends Check {
             final WrappedPacketInFlying wrappedPacketInFlying = new WrappedPacketInFlying(packet.getRawPacket());
 
             if (wrappedPacketInFlying.isPosition()) {
-                final boolean serverOnGround = wrappedPacketInFlying.isOnGround();
-                final boolean clientOnGround = data.getLocation().getY() % (1D / 64) == 0.0;
+                final boolean clientOnGround = wrappedPacketInFlying.isOnGround();
+                final boolean serverOnGround = data.getLocation().getY() % (1D / 64) == 0.0;
 
-                final boolean invalid = CollisionUtil.isInLiquid(data.getPlayer()) && CollisionUtil.isCollidingWithClimbable(data.getPlayer());
+                final boolean invalid = CollisionUtil.isInLiquid(data.getPlayer())
+                        && CollisionUtil.isCollidingWithClimbable(data.getPlayer());
 
                 if (data.getPlayer().isInsideVehicle()) ticksSinceInVehicle = 0;
                 else ++ticksSinceInVehicle;
